@@ -1,7 +1,46 @@
-This project is a simple traffic light system built using an Arduino, three LEDs (red, yellow, and green), resistors, a push button, and a breadboard. 
+int red = 2;
+int yellow = 3;
+int green = 4;
+int button = 7;
 
-The system works by controlling the LEDs to simulate real traffic lights. The green LED turns on first, allowing movement, followed by the yellow LED as a warning, and then the red LED to stop traffic.
+bool systemOn = false;
+int lastButtonState = LOW;
 
-A push button is included to control the system. When pressed, it can start or stop the traffic light sequence.
+void setup() {
+  pinMode(red, OUTPUT);
+  pinMode(yellow, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(button, INPUT);
+}
 
-The project helps in understanding basic electronics, circuit connections, and programming using Arduino.
+void loop() {
+  int buttonState = digitalRead(button);
+
+  if (buttonState == HIGH && lastButtonState == LOW) {
+    systemOn = !systemOn;
+    delay(200);
+  }
+
+  lastButtonState = buttonState;
+
+  if (systemOn) {
+    digitalWrite(red, HIGH);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, LOW);
+    delay(5000);
+
+    digitalWrite(red, LOW);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, HIGH);
+    delay(5000);
+
+    digitalWrite(red, LOW);
+    digitalWrite(yellow, HIGH);
+    digitalWrite(green, LOW);
+    delay(2000);
+  } else {
+    digitalWrite(red, LOW);
+    digitalWrite(yellow, LOW);
+    digitalWrite(green, LOW);
+  }
+}
